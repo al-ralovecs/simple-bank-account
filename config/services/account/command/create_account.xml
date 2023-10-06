@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Component\Account\Command\Handler\CreateAccountHandler" autowire="true">
+            <argument key="$accountSpecificationValidator" type="service" id="component.account.validator.specification.create_account" />
+            <argument key="$accountProcessor" type="service" id="component.account.processor.create_account" />
+        </service>
+
+        <service id="component.account.validator.specification.create_account"
+                 class="Component\Account\Validator\Specification\Decorator\ChainAccountSpecificationValidator" autowire="true">
+
+            <call method="add">
+                <argument key="$accountSpecificationValidator" type="service">
+                    <service class="Component\Account\Validator\Specification\AccountSpecificationCurrencyValidator" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+        <service id="component.account.processor.create_account"
+                 class="Component\Account\Processor\Decorator\ChainAccountProcessor">
+
+            <call method="add">
+                <argument key="$accountProcessor" type="service">
+                    <service class="Component\Account\Processor\AccountPersistingProcessor" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+    </services>
+</container>

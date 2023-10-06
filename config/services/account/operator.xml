@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Component\Account\Operator\AccountFetcherInterface"
+                 alias="Component\Account\Bridge\Doctrine\Repository\AccountRepository" />
+
+        <service id="Component\Account\Operator\AccountPersisterInterface"
+                 alias="Component\Account\Bridge\Doctrine\Repository\AccountRepository" />
+
+        <service id="Component\Account\Operator\AccountIteratorInterface"
+                 class="Component\Account\Bridge\Doctrine\Dao\AccountBalanceIteratorDao">
+            <argument key="$connection" type="service" id="doctrine.dbal.default_connection" />
+        </service>
+
+        <service id="Component\Account\Operator\AccountBalanceFetcherInterface"
+                 class="Component\Account\Bridge\Doctrine\Dao\AccountBalanceFetcherDao">
+            <argument key="$connection" type="service" id="doctrine.dbal.default_connection" />
+        </service>
+
+    </services>
+</container>

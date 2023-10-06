@@ -1,0 +1,22 @@
+.idea
+/vendor/
+/var/
+composer.lock
+auth.json
+
+###> phpunit ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< phpunit ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+!/**/.gitkeep
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+

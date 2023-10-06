@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Component\Pagination\Listener\PaginatedResponseListener" autowire="true">
+            <tag name="kernel.event_listener" event="kernel.view" priority="130" />
+        </service>
+
+        <service id="Component\Pagination\Listener\ResponseListener" autowire="true">
+            <tag name="kernel.event_listener" event="kernel.view" priority="129" />
+        </service>
+
+        <service id="Component\Pagination\Listener\ResourceProcessingListener" autowire="true">
+            <tag name="kernel.event_listener" event="kernel.view" priority="128" />
+        </service>
+
+        <service id="Component\Pagination\Listener\ExceptionResponseListener" autowire="true">
+            <tag name="kernel.event_listener" event="kernel.exception" priority="120" />
+        </service>
+    </services>
+</container>

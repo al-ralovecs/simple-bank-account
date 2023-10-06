@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Money\Converter" autowire="true">
+            <argument key="$exchange" type="service" id="component.currency_converter.exchange.currency_converter" />
+        </service>
+
+        <service id="component.currency_converter.exchange.currency_converter"
+                 class="Component\CurrencyConverter\Bridge\Exchange\Decorator\FirstNonFailingExchange">
+            <call method="add">
+                <argument key="$exchange" type="service">
+                    <service class="Component\CurrencyConverter\Bridge\Exchange\Exchange">
+                        <argument key="$gateway" type="service" id="Component\CurrencyConverter\Bridge\Gateway\Exchange\Gateway"/>
+                    </service>
+                </argument>
+                <argument key="$priority">256</argument>
+            </call>
+            <call method="add">
+                <argument key="$exchange" type="service">
+                    <service class="Component\CurrencyConverter\Bridge\Exchange\Storage" autowire="true" />
+                </argument>
+                <argument key="$priority">%env(APP_CURRENCY_CONVERTER_STORAGE_PRIORITY)%</argument>
+            </call>
+        </service>
+
+    </services>
+</container>

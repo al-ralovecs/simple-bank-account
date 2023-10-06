@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Component\Transaction\Command\Handler\CreateTransactionCriteriaHandler" autowire="true">
+            <argument key="$commandValidator" type="service" id="component.transaction.validator.command_validator" />
+            <argument key="$transactionCriteriaProcessor" type="service" id="component.transaction.processor.criteria_processor" />
+        </service>
+
+        <service id="component.transaction.validator.command_validator"
+                 class="Component\Transaction\Validator\Command\Decorator\ChainCreateTransactionCriteriaCommandValidator">
+
+            <call method="add">
+                <argument key="$validator" type="service">
+                    <service class="Component\Transaction\Validator\Command\CreateTransactionCriteriaCommandCurrencyExistsValidator" autowire="true" />
+                </argument>
+            </call>
+
+            <call method="add">
+                <argument key="$validator" type="service">
+                    <service class="Component\Transaction\Validator\Command\CreateTransactionCriteriaCommandCurrencyValidator" autowire="true" />
+                </argument>
+            </call>
+
+            <call method="add">
+                <argument key="$validator" type="service">
+                    <service class="Component\Transaction\Validator\Command\CreateTransactionCriteriaCommandSameAccountValidator" />
+                </argument>
+            </call>
+
+        </service>
+
+        <service id="component.transaction.processor.criteria_processor"
+                 class="Component\Transaction\Processor\Decorator\ChainTransactionCriteriaProcessor">
+
+            <call method="add">
+                <argument key="$transactionCriteriaProcessor" type="service">
+                    <service class="Component\Transaction\Processor\TransactionCriteriaValidatingProcessor">
+                        <argument key="$criteriaValidator" type="service" id="component.transaction.validator.criteria.criteria_validator" />
+                    </service>
+                </argument>
+            </call>
+
+            <call method="add">
+                <argument key="$transactionCriteriaProcessor" type="service">
+                    <service class="Component\Transaction\Processor\TransactionCreatingCriteriaProcessor" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+        <service id="component.transaction.validator.criteria.criteria_validator"
+                 class="Component\Transaction\Validator\Criteria\Decorator\ChainCreateTransactionCriteriaValidator">
+
+            <call method="add">
+                <argument key="$criteriaValidator" type="service">
+                    <service class="Component\Transaction\Validator\Criteria\CreateTransactionCriteriaEnoughFundsValidator" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+    </services>
+</container>

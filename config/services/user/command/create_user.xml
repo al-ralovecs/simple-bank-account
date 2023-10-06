@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Component\User\Command\Handler\CreateUserHandler" autowire="true">
+            <argument key="$userProcessor" type="service" id="component.user.processor.create_user" />
+        </service>
+
+        <service id="component.user.processor.create_user"
+                 class="Component\User\Processor\Decorator\ChainUserProcessor">
+
+            <call method="add">
+                <argument key="$userProcessor" type="service">
+                    <service class="Component\User\Processor\UserValidatingProcessor" autowire="true">
+                        <argument key="$userValidator" type="service" id="component.user.validator.create_user_validator" />
+                    </service>
+                </argument>
+            </call>
+
+            <call method="add">
+                <argument key="$userProcessor" type="service">
+                    <service class="Component\User\Processor\UserPersistingProcessor" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+        <service id="component.user.validator.create_user_validator"
+                 class="Component\User\Validator\Decorator\ChainUserValidator">
+
+            <call method="add">
+                <argument key="$userValidator" type="service">
+                    <service class="Component\User\Validator\UserExistsByEmailValidator" autowire="true" />
+                </argument>
+            </call>
+
+        </service>
+
+    </services>
+</container>

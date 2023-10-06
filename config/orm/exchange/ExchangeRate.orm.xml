@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="exchange_rate"
+            name="Component\Exchange\Model\ExchangeRate"
+            repository-class="Component\Exchange\Bridge\Doctrine\Repository\ExchangeRateRepository"
+            change-tracking-policy="DEFERRED_EXPLICIT">
+
+        <id name="baseCurrency" column="base_currency" type="string" length="3" />
+        <id name="counterCurrency" column="counter_currency" type="string" length="3" />
+
+        <field name="ratio" column="ratio" type="string" length="32" nullable="false" />
+        <field name="createdAt" column="created_at" type="datetime_immutable" nullable="false" />
+
+    </entity>
+</doctrine-mapping>

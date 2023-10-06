@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="Money\Currencies"
+                 class="Money\Currencies\ISOCurrencies" />
+
+        <service id="Component\Exchange\Operator\ExchangeRateFetcherInterface"
+                 alias="Component\Exchange\Bridge\Doctrine\Repository\ExchangeRateRepository" />
+
+    </services>
+</container>
