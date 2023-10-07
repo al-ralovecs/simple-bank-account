@@ -14,6 +14,7 @@ services:
             context: ../../
             args:
                 BUILD_ROLE: "ci"
+                GITLAB_ACCESS_TOKEN: ${GITLAB_ACCESS_TOKEN}
         container_name: ${CI_CONTAINER_NAME}
         depends_on:
             postgres:

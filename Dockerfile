@@ -32,6 +32,8 @@ RUN ln -s /usr/local/bin/php /usr/bin/php
 # CI
 ##########################################################################
 
+ARG GITLAB_ACCESS_TOKEN
+
 FROM base as ci
 
 # PHP Production Configuration
@@ -42,7 +44,7 @@ COPY . ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer config -g gitlab-token.gitlab.accrela.io "glpat-T79dykamAqyxjzK9YFya"
+RUN composer config -g gitlab-token.gitlab.accrela.io ${GITLAB_ACCESS_TOKEN}
 RUN composer install
 RUN composer dump-autoload
 
