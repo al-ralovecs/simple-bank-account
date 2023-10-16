@@ -16,7 +16,7 @@ ENV APP_DIR="/var/www/app"
 RUN addgroup -S "$APP_USER_GROUP" && adduser -S "$APP_USER_NAME" -G "$APP_USER_GROUP" -s /bin/sh
 
 # Global dependencies
-RUN apk add --update git gettext su-exec tzdata openssh-client libpq-dev && rm -rf /tmp/* /var/cache/apk/*
+RUN apk add --update git gettext su-exec tzdata shadow openssh-client libpq-dev && rm -rf /tmp/* /var/cache/apk/*
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql

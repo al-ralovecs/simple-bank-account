@@ -46,6 +46,7 @@ The following api urls are accessible:
 ### Clients
 
 GET /api/user - list all clients
+
 POST /api/user - create a client, provide json content:
 ```
 {
@@ -57,6 +58,7 @@ GET /api/user/{userId} - get info about a client by its id
 ### Accounts
 
 GET /api/user/{userId}/account - list all the client's accounts with their current balance
+
 POST /api/user/{userId}/account - create a new account for the client, by providing json body:
 ```
 {   
@@ -67,12 +69,13 @@ POST /api/user/{userId}/account - create a new account for the client, by provid
 ### Transactions
 
 GET /api/account/{accountId}/transaction - list all the transactions of the account
+
 POST /api/transaction - create a new money transaction, by providing request json body:
 ```
 {
     "sourceAccount": "<uuid of the account to transfer money from>",
     "targetAccount": "<uuid of the account to transfer money to>",
-    "currency": "<three-digit currency code>",
+    "currency": "<three-letter currency code>",
     "amount": <integer! amount OF CENTS! to transfer>
 }
 ```
