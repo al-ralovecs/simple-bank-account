@@ -61,6 +61,8 @@ FROM base as dev
 # PHP Configs
 COPY etc/conf/php-fpm.conf /usr/local/etc/
 
+COPY --chown=${APP_USER_NAME}:${APP_USER_GROUP} . ${APP_DIR}
+
 # PHP Development Configuration
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
