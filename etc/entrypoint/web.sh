@@ -1,26 +1,8 @@
 #!/bin/sh
 set -e
 
-TARGET_UID=$(stat -c "%u" $APP_DIR)
-TARGET_GID=$(stat -c "%g" $APP_DIR)
-
-if [ $TARGET_UID != 0 ] || [ $TARGET_GID != 0 ]; then
-    printf '%s\n' "[$(date +"%T")] Working around permission errors locally by making sure that \"${APP_USER_NAME}\" uses the same uid and gid as the host volume..." >&1
-
-    if [ $TARGET_UID != 0 ]; then
-        printf '%s\n' "[$(date +"%T")] Setting ${APP_USER_NAME} user to use uid $TARGET_UID..." >&1
-        usermod -o -u "$TARGET_UID" "${APP_USER_NAME}" || true
-    fi
-
-    if [ $TARGET_GID != 0 ]; then
-        printf '%s\n' "[$(date +"%T")] Setting ${APP_USER_NAME} group to use gid $TARGET_GID..." >&1
-        groupmod -o -g "$TARGET_GID" "${APP_USER_NAME}" || true
-    fi
-
-    # Change ownership of delegated folders
-    printf '%s\n' "[$(date +"%T")] Changing ownership of delegated folders..." >&1
-    chown $TARGET_UID:$TARGET_GID public vendor || true
-fi
+printf '%s\n' "[$(date +"%T")] Setting up project directory permissions" >&1
+chown -R ${APP_USER_NAME}:${APP_USER_GROUP} .
 
 printf '%s\n' "[$(date +"%T")] Setting up nginx config" >&1
 envsubst '$$APP_HOST $$APP_API_HOST' < /etc/nginx/sites-enabled/app.conf.template > /etc/nginx/sites-enabled/app.conf
